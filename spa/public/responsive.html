@@ -1,0 +1,135 @@
+<html>
+  <head>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      header {
+        background: #0288d1;
+        color: white;
+        height: 25vh;
+      }
+
+      nav {
+        padding: 0;
+        background: #b3e5fc;
+        width: 20%;
+        height: 65vh;
+        float: left;
+      }
+
+      ul {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        flex: 1;
+        border-bottom: 1px solid grey;
+        border-right: 1px solid grey;
+      }
+
+      li:nth-of-type(1) {
+        border-top: 1px solid grey;
+      }
+
+      main {
+        display: flex;
+        flex-wrap: wrap;
+        background: #e1f5fe;
+        width: 80%;
+        height: 65vh;
+        float: left;
+      }
+
+      footer {
+        background: #80d8ff;
+        clear: both;
+        height: 10vh;
+      }
+
+      .center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .panel {
+        border: 1px solid grey;
+      }
+
+      .hamburger {
+        cursor: pointer;
+        display: none;
+        margin-left: 50px;
+        width: 40px;
+        height: 40px;
+        border: 2px solid red;
+      }
+
+      .hamburger > div {
+        margin: 8px;
+        border-bottom: 2px solid red;
+      }
+
+      @media (max-width: 480px) {
+        nav {
+          display: none;
+        }
+        main {
+          width: 100%;
+        }
+        .panel {
+          flex: 1 1 100%;
+        }
+        .hamburger {
+          display: block;
+        }
+      }
+
+      @media (min-width: 481px) and (max-width: 768px) {
+        .panel {
+          flex: 1 1 50%;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .panel {
+          flex: 1 1 25%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="center">
+        Some Header Text
+        <div class="hamburger">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </header>
+      <nav>
+        <ul>
+          <li class="center">Home</li>
+          <li class="center">Sales</li>
+          <li class="center">Employees</li>
+          <li class="center">Customers</li>
+        </ul>
+      </nav>
+      <main>
+        <div class="panel center">Data1</div>
+        <div class="panel center">Data2</div>
+        <div class="panel center">Data3</div>
+        <div class="panel center">Data4</div>
+      </main>
+      <footer class="center">Allen Wang @ RingCentral</footer>
+    </div>
+  </body>
+</html>

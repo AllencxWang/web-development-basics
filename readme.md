@@ -1,0 +1,22 @@
+# Frontend Development Crash Course
+
+- Client Side Render vs Server Side Render
+  - Authentication
+    - cookie
+      - axios with credential
+    - token
+- What is DOM
+  - create a DOM node
+  - innerHTML
+    - avoid unnecessary render
+    - xss
+- CORS (cross site resource sharing)
+- Event Bubbling & Event Delegate
+  - preventDefault
+  - stopPropagation
+  - stopImmediatePropagation
+- Styling
+  - css specificity
+  - display
+    - block vs inline
+  - responsive design (media query)

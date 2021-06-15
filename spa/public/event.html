@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <style>
+      .parent {
+        width: 600px;
+        height: 600px;
+        background-color: red;
+      }
+      .child {
+        width: 400px;
+        height: 400px;
+        background-color: green;
+      }
+      .grandchild {
+        width: 200px;
+        height: 200px;
+        background-color: blue;
+      }
+      span {
+        display: inline-block;
+        width: 100px;
+      }
+      li {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>event bubbling</h3>
+    <div class="parent">
+      parent
+      <div class="child">
+        child
+        <div class="grandchild">grandchild</div>
+      </div>
+    </div>
+    <hr />
+
+    <h3>event delegate</h3>
+    <input type="text" placeholder="type some words here" />
+    <button>Add</button>
+    <ul></ul>
+    <hr />
+    <br />
+    <script>
+      const parent = document.querySelector('.parent');
+      const child = document.querySelector('.child');
+      const grandchild = document.querySelector('.grandchild');
+
+      parent.addEventListener('click', () => {
+        alert('parent');
+      });
+      child.addEventListener('click', () => {
+        alert('child');
+      });
+      grandchild.addEventListener('click', (evt) => {
+        alert('grandchild');
+      });
+
+      // --------------------------------------------
+
+      const btnAdd = document.querySelector('button');
+      const input = document.querySelector('input');
+      const ul = document.querySelector('ul');
+
+      btnAdd.addEventListener('click', () => {
+        if (input.value) {
+          const li = document.createElement('li');
+          const span = document.createElement('span');
+          const btnDel = document.createElement('button');
+          span.innerText = input.value;
+          btnDel.innerText = `del ${Date.now()}`;
+          // const deleteItem = () => {
+          //   ul.removeChild(li);
+          //   btnDel.removeEventListener('click', deleteItem);
+          // };
+          // btnDel.addEventListener('click', deleteItem);
+          li.appendChild(span);
+          li.appendChild(btnDel);
+          ul.appendChild(li);
+          input.value = '';
+        }
+      });
+
+      ul.addEventListener('click', (evt) => {
+        // console.log(evt.target);
+        ul.removeChild(evt.target.parentNode);
+      });
+    </script>
+  </body>
+</html>

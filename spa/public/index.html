@@ -1,0 +1,147 @@
+<html>
+  <head>
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="login" class="hidden">
+      <form>
+        <input type="text" name="account" placeholder="Account" />
+        <input type="password" name="password" placeholder="Password" />
+        <input type="submit" value="login" />
+      </form>
+    </div>
+    <div id="main" class="hidden">
+      <h1>TODOs</h1>
+      <hr />
+      <ul></ul>
+      <hr />
+      <form action="/todo" method="post">
+        <input type="text" name="todo" placeholder="enter todo here" />
+        <input type="submit" value="add" />
+      </form>
+      <hr />
+      <button>CORS without Preflight Request</button>
+      <hr />
+      <br />
+      <form action="/logout" method="post">
+        <input type="submit" value="logout" />
+      </form>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const divLogin = document.querySelector('#login');
+      const divMain = document.querySelector('#main');
+      const btnLogin = document.querySelector('input[value="login"]');
+      const btnLogout = document.querySelector('input[value="logout"]');
+      const btnAdd = document.querySelector('input[value="add"]');
+      const inputAccount = document.querySelector('input[name="account"]');
+      const inputPassword = document.querySelector('input[name="password"]');
+      const inputTodo = document.querySelector('input[name="todo"]');
+      const ul = document.querySelector('ul');
+      const btnTest = document.querySelector('button');
+
+      btnTest.addEventListener('click', async (evt) => {
+        const { data } = await axios.get('http://localhost:8003/api/test');
+        alert(JSON.stringify(data));
+      });
+
+      let token = localStorage.getItem('token');
+
+      const setDivVisibility = (div, visible) => {
+        if (visible) {
+          div.classList.remove('hidden');
+        } else {
+          div.classList.add('hidden');
+        }
+      };
+
+      const getHeaders = () => ({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${token}`,
+        },
+      });
+
+      const renderListWithElement = (list) => {
+        // TODO: createElement + appendChild
+      };
+      const renderListWithInnerHTML = (list) => {
+        ul.innerHTML = list.reduce((todos, todo) => {
+          todos += `<li>${todo}</li>`;
+          return todos;
+        }, '');
+      };
+      const renderListWithFragment = (list) => {
+        // TODO: createDocumentFragment + createElement + appendChild
+      };
+
+      const renderList = async () => {
+        const res = await axios.get(
+          'http://localhost:8003/api/list',
+          getHeaders()
+        );
+        ul.innerHTML = ''; // remove existing list
+        // renderListWithElement(res.data.list);
+        renderListWithInnerHTML(res.data.list);
+        // renderListWithFragment(res.data.list);
+      };
+
+      const handleLogin = async (evt) => {
+        evt.preventDefault();
+        const res = await axios.post(
+          'http://localhost:8003/api/auth',
+          {
+            account: inputAccount.value,
+            password: inputPassword.value,
+          },
+          getHeaders()
+        );
+        if (res.data.token) {
+          token = res.data.token;
+          localStorage.setItem('token', token);
+          setDivVisibility(divLogin, false);
+          setDivVisibility(divMain, true);
+          renderList();
+        }
+      };
+
+      const handleLogout = (evt) => {
+        evt.preventDefault();
+        token = null;
+        localStorage.removeItem('token');
+        setDivVisibility(divLogin, true);
+        setDivVisibility(divMain, false);
+      };
+
+      const handleAddTodo = async (evt) => {
+        evt.preventDefault();
+        await axios.post(
+          'http://localhost:8003/api/list',
+          {
+            todo: inputTodo.value,
+          },
+          getHeaders()
+        );
+        inputTodo.value = '';
+        renderList();
+      };
+
+      btnLogin.addEventListener('click', handleLogin);
+      btnLogout.addEventListener('click', handleLogout);
+      btnAdd.addEventListener('click', handleAddTodo);
+
+      (async () => {
+        if (token) {
+          divMain.classList.remove('hidden');
+          renderList();
+        } else {
+          divLogin.classList.remove('hidden');
+        }
+      })();
+    </script>
+  </body>
+</html>
